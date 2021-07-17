@@ -29,6 +29,20 @@ services:
             - ./docker/nginx/:/etc/nginx/conf.d     #if using apache ./docker/apache:/etc/apache2/sites-available/, create the conf file
         networks:
             - microservices
+
+    #mysql
+    db_micro_01:
+        image: mysql:5.7.22
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+        volumes:
+            - ./.docker/mysql/db_data:/var/lib/mysql      #Database will be saved in this folder... DON'T FORGET to add it in .gitignore
+        networks:
+            - microservices
     
 networks:
     microservices:
