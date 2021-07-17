@@ -39,6 +39,8 @@ services:
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
             MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_USER: ${DB_USERNAME}
+        ports:
+            - ${DB_PORT}:3306
         volumes:
             - ./.docker/mysql/db_data:/var/lib/mysql      #Database will be saved in this folder... DON'T FORGET to add it in .gitignore
         networks:
