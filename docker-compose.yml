@@ -1,5 +1,6 @@
 version: "3.7"
 services: 
+    #Micro service 01
     micro_01:
         build: 
             args: 
@@ -13,4 +14,24 @@ services:
         working_dir: /var/www
         volumes:
             - ./:/var/www
+        networks:
+            - microservices
+
+    #nginx
+    nginx:
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - 8000:80
+            # - 443:443
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d     #if using apache ./docker/apache:/etc/apache2/sites-available/, create the conf file
+        networks:
+            - microservices
+    
+networks:
+    microservices:
+        driver: bridge    
+
         
