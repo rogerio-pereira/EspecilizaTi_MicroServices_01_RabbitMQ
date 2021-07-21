@@ -23,8 +23,12 @@ class CreateUpdateCategoryRequest extends FormRequest
      */
     public function rules()
     {
+        // $url = $this->url;       //If URL is coming from request
+        $url = $this->segment(2);   //URL is second segment for route /categories/{url}
+
         return [
-            'title' => 'required|min:3|max:150|unique:categories',
+            //Unique:table,current_field,exception_value,exception_field
+            'title' => "required|min:3|max:150|unique:categories,title,{$url},url",
             'description' => 'required|min:3|max:255',
         ];
     }

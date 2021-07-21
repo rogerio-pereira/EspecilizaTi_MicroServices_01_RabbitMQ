@@ -53,7 +53,7 @@ class CategoryController extends Controller
         $category = $this->repository
                         ->where('url', $url)
                         ->firstOrFail();
-                        
+
         return new CategoryResource($category);
     }
 
@@ -64,9 +64,14 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateUpdateCategoryRequest $request, $url)
     {
-        //
+        $category = $this->repository
+                        ->where('url', $url)
+                        ->firstOrFail();
+        $category->update($request->validated());
+
+        return new CategoryResource($category);
     }
 
     /**
