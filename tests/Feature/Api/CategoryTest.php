@@ -84,4 +84,45 @@ class CategoryTest extends TestCase
 
         $response->assertStatus(201);
     }
+
+    /**
+     * Validation Update Category
+     *
+     * @test
+     */
+    public function test_validation_update_category()
+    {
+        $category = Category::factory()->create();
+        $url = $category->url;
+        
+        //Validation fail
+        $response = $this->putJson($this->endpoint.'/'.$url, []);
+        $response->assertStatus(422);
+
+        //404
+        $data = [
+            'title' => 'title',
+            'description' => 'description',
+        ];
+        $response = $this->putJson($this->endpoint.'/wrong-url', $data);
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Update Category
+     *
+     * @test
+     */
+    public function test_update_category()
+    {
+        $category = Category::factory()->create();
+        $url = $category->url;
+        $data = [
+            'title' => 'title',
+            'description' => 'description',
+        ];
+        
+        $response = $this->putJson($this->endpoint.'/'.$url, $data);
+        $response->assertStatus(200);
+    }
 }
