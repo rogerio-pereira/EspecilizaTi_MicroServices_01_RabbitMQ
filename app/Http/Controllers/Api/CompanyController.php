@@ -22,11 +22,10 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $companies = $this->repository
-                        ->with('category')
-                        ->paginate();
+        $filter = $request->get('filter', '');
+        $companies = $this->repository->getCompanies($filter);
 
         return CompanyResource::collection($companies);
     }
