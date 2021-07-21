@@ -80,8 +80,13 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($url)
     {
-        //
+        $category = $this->repository
+                        ->where('url', $url)
+                        ->firstOrFail();
+        $category->delete();
+
+        return response()->json([], 204);
     }
 }
