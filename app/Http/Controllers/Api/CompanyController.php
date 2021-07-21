@@ -50,9 +50,11 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($uuid)
     {
-        //
+        $company = $this->repository->where('uuid', $uuid)->firstOrFail();
+
+        return new CompanyResource($company);
     }
 
     /**
