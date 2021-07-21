@@ -78,8 +78,11 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($uuid)
     {
-        //
+        $company = $this->repository->where('uuid', $uuid)->firstOrFail();
+        $company->delete();
+
+        return response()->json([], 204);
     }
 }
