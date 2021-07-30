@@ -7,14 +7,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CompanyResource;
 use App\Http\Requests\CreateUpdateCompanyRequest;
+use App\Services\EvaluationService;
 
 class CompanyController extends Controller
 {
     protected $repository;
+    protected $evaluationService;
 
-    public function __construct(Company $model)
+    public function __construct(Company $model, EvaluationService $service)
     {
         $this->repository = $model;
+        $this->evaluationService = $service;
     }
 
     /**
@@ -49,11 +52,16 @@ class CompanyController extends Controller
      * @param  uuid  $uuid
      * @return \Illuminate\Http\Response
      */
-    public function show($uuid)
+    public function show(string $uuid)
     {
         $company = $this->repository->where('uuid', $uuid)->firstOrFail();
 
-        return new CompanyResource($company);
+        $evaluations = $this->evaluationService->getEvaluationsCompany($uuid);
+
+        return (new CompanyResource($company))
+                        ->additional([
+                            'evaluations' => json_decode($evaluations)
+                        ]);
     }
 
     /**
