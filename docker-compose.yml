@@ -14,6 +14,8 @@ services:
         working_dir: /var/www
         volumes:
             - ./:/var/www
+        depends_on:
+            - redis_micro_01
         networks:
             - microservices
 
@@ -43,6 +45,30 @@ services:
             - ./.docker/mysql/db_data:/var/lib/mysql      #Database will be saved in this folder... DON'T FORGET to add it in .gitignore
         networks:
             - microservices
+
+    #queue micro 01
+    queue_micro_01:
+        build: 
+            args: 
+                user: micro_01      #Will be used in Dockerfile
+                uid: 1000           #Will be used in Dockerfile
+            context: ./
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        command: "php artisan queue:work"
+        volumes:
+            - ./:/var/www
+        depends_on: 
+            - redis_micro_01
+        networks:
+            - microservices
+
+    #redis
+    redis_micro_01:
+        image: redis:latest
+        networks:
+            - microservices
+
     
 networks:
     microservices:
