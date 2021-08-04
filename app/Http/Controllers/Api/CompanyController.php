@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CompanyResource;
 use App\Http\Requests\CreateUpdateCompanyRequest;
+use App\Jobs\CompanyCreatedJob;
 use App\Services\EvaluationService;
 
 class CompanyController extends Controller
@@ -42,6 +43,8 @@ class CompanyController extends Controller
     public function store(CreateUpdateCompanyRequest $request)
     {
         $company = $this->repository->create($request->validated());
+
+        CompanyCreatedJob::dispatch($company->email);
 
         return new CompanyResource($company);
     }

@@ -16,6 +16,7 @@ services:
             - ./:/var/www
         depends_on:
             - redis_micro_01
+            - queue
         networks:
             - microservices
 
@@ -47,7 +48,7 @@ services:
             - microservices
 
     #queue micro 01
-    queue_micro_01:
+    queue:
         build: 
             args: 
                 user: micro_01      #Will be used in Dockerfile
