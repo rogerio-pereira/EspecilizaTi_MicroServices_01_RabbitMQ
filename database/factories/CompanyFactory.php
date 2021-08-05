@@ -27,6 +27,7 @@ class CompanyFactory extends Factory
             'name' => $this->faker->unique()->company,
             'whatsapp' => $this->faker->unique()->tollFreePhoneNumber,
             'email' => $this->faker->unique()->safeEmail,
+            'image' => $this->faker->imageUrl(500, 500),
         ];
     }
 }
