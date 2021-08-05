@@ -25,7 +25,7 @@ class CreateUpdateCompanyRequest extends FormRequest
     {
         $uuid = $this->company;
 
-        return [
+        $rules = [
             'category_id' => 'required|exists:categories,id',
             'name' => "required|unique:companies,name,{$uuid},uuid",
             'whatsapp' => "required|unique:companies,whatsapp,{$uuid},uuid",
@@ -34,6 +34,12 @@ class CreateUpdateCompanyRequest extends FormRequest
             'facebook' => "nullable|unique:companies,facebook,{$uuid},uuid",
             'instagram' => "nullable|unique:companies,instagram,{$uuid},uuid",
             'youtube' => "nullable|unique:companies,youtube,{$uuid},uuid",
+            'image' => 'required|image|max:1024',
         ];
+
+        if($this->method() == 'PUT')
+            $rules['image'] = 'nullable|image|max:1024';
+
+        return $rules;
     }
 }

@@ -44,7 +44,7 @@ class CompanyController extends Controller
      */
     public function store(CreateUpdateCompanyRequest $request)
     {
-        $company = $this->companyService->createNewCompany($request->validated());
+        $company = $this->companyService->createNewCompany($request->validated(), $request->image);
 
         CompanyCreatedJob::dispatch($company->email)
             ->onQueue(env('QUEUE_EMAIL'));
@@ -79,7 +79,7 @@ class CompanyController extends Controller
      */
     public function update(CreateUpdateCompanyRequest $request, string $uuid)
     {
-        $company = $this->companyService->updateCompany($uuid, $request->validated());
+        $company = $this->companyService->updateCompany($uuid, $request->validated(), $request->image);
 
         return new CompanyResource($company);
     }
