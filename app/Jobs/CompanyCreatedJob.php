@@ -34,7 +34,6 @@ class CompanyCreatedJob implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->email)
-            ->send(new WelcomeNewCompanyMail());
+        
     }
 }

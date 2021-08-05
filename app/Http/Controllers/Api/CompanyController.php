@@ -44,7 +44,8 @@ class CompanyController extends Controller
     {
         $company = $this->repository->create($request->validated());
 
-        CompanyCreatedJob::dispatch($company->email);
+        CompanyCreatedJob::dispatch($company->email)
+            ->onQueue(env('QUEUE_EMAIL'));
 
         return new CompanyResource($company);
     }
